@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+# LaplaceLine.py:  Solve Laplace's eqtn, 3D matplot, close shell to quit
+
+import matplotlib.pyplot as plt;
+#from mpl_toolkits.mplot3d import Axes3D
+#import plotly.plotly as py
+#from plotly.graph_objs import *
+#from pylab import *
+from numpy import *;
+
+def functz(V):                                             # Function returns V(x, y)
+    z = V[X,Y]                        
+    return z
+
+print("Initializing")
+Nmax = 100; Niter = 300; V = zeros((Nmax, Nmax), float)            # float maybe Float
+Vm=100
+
+print "Working hard, wait for the figure while I count to 60"
+
+x = arange(0, Nmax, 1);  y = arange(0, Nmax, 1)                # plot every other point                        
+X, Y = meshgrid(x,y)                 
+    
+for iter in range(Niter):                                 # iterations over algorithm
+    for k in range(30, 60):  V[k,70] = Vm # line at const V
+    for k in range(30,60): V[k,30]=-Vm
+    for i in range(1, Nmax-2):                                                
+        for j in range(1,Nmax-2): V[i,j] = 0.25*(V[i+1,j]+V[i-1,j]+V[i,j+1]+V[i,j-1])  
+    if iter%10 == 0: 
+        print iter
+        Z = functz(V)                          
+#        fig=plt.figure()
+#        ax=fig.add_subplot(111)
+#        levels = array([10**pw for pw in linspace(0,5,20)])
+ #       levels = list(-levels) + list(levels)
+ #       CS=ax.contour(X,Y,Z)
+  #      plt.clabel(CS,inline=1,fontsize=10)
+   #     plt.show()
+
+
+        Ey,Ex=gradient(-V)
+        fig, ax = plt.subplots()
+        ax.streamplot(x, y, Ex, Ey, color=V)
+        cont=ax.contour(x,y,V,vmin=V.min(),vmax=V.max())
+        plt.clabel(cont,inline=1,fontsize=10)
+        plt.show()
